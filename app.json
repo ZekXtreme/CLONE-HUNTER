@@ -1,0 +1,63 @@
+{
+  "name": "TelegramCloneBot",
+  "description": "Telegram CloneBot by Xcodershub",
+  "logo": "https://i.imgur.com/ZLi4nDP.jpg",
+  "keywords": [
+    "telegram",
+    "clone",
+    "google drive",
+    "clone bot"
+  ],
+  "repository": "https://github.com/anime-republic/CLONE-HUNTER",
+  "website":   "https://github.com/anime-republic/CLONE-HUNTER",
+  "success_url": "https://t.me/xcodershub",
+  "env": {
+    "BOT_TOKEN": {
+      "description": "Get this value from @BotFather on Telegram",
+      "value": "",
+      "required": true
+    },
+    "GDRIVE_FOLDER_ID": {
+      "description": "Google Drive Folder ID to Clone to. (Dont paste a link)",
+      "value": "",
+      "required": true
+    },
+    "OWNER_ID": {
+      "description": "Get this value by sending /id to @MissRose_bot on Telegram.",
+      "value": "",
+      "required": true
+    },
+    "AUTHORISED_USERS" : {
+      "description": "List of user ids to allow bot access to. Note: seperate with ,",
+      "value": "",
+      "required": false
+    },
+    "INDEX_URL": {
+      "description": "(Optional) CloudFlare Workers Index Link from GDINDEX (dont put / at end)",
+      "required": false
+    },
+    "IS_TEAM_DRIVE": {
+      "description": "Does you 'GDRIVE_FOLDER_ID' lead to a Team Drive or Normal Google Drive Folder",
+      "required": false,
+      "value": "True"
+    },
+    "TOKEN_PICKLE_URL": {
+      "description": "Only if you want to load your token.pickle externally from an Index Link. Fill this with the direct link of that file.",
+      "value": "",
+      "required": false
+    },
+    "ACCOUNTS_ZIP_URL": {
+      "description": "Only if you want to load your Service Account externally from an Index Link. Archive the accounts folder to a zip file. Fill this with the direct link of that file",
+      "value": "",
+      "required": false
+    },
+    "USE_SERVICE_ACCOUNTS": {
+      "description": "If you are directly deploying from GitHub, set this to False. But if you later add Service Accounts, go to 'Config Vars' in app settings and set this to True.",
+      "value": "True",
+      "required": false
+    }
+  },
+  "buildpacks": [{
+    "url": "heroku/python"
+  }]
+}
