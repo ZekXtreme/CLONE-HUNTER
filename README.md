@@ -5,7 +5,7 @@ For all my people using TDs who now need to store everything in it instead of th
 
 
 
-## Setting up config file (present in bot/config.py)
+## Setting up config file 
 - **BOT_TOKEN** : The telegram bot token that you get from @BotFather
 - **GDRIVE_FOLDER_ID** : This is the folder ID of the Google Drive Folder to which you want to clone.
 - **OWNER_ID** : The Telegram user ID (not username) of the owner of the bot (if you do not have that, send /id to @kelverbot )
@@ -137,3 +137,4 @@ sudo docker stop id
 - [jagarit007](https://github.com/jagrit007) for base repo and guide
 - [Izzy](https://github.com/lzzy12/python-aria-mirror-bot)
 - [xyou365](https://github.com/xyou365/AutoRclone)
+- [Jusidama](https://github.com/jusidama18) For Lot of features
