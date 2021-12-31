@@ -9,6 +9,7 @@ def getCommand(name: str, command: str):
     except KeyError:
         return command
 
+
 class _BotCommands:
     def __init__(self):
         self.StartCommand = getCommand('START_BOT', 'start')
@@ -17,6 +18,7 @@ class _BotCommands:
         self.LogCommand = getCommand('LOG_BOT', 'logs')
         self.CloneCommand = getCommand('CLONE_BOT', 'clone')
         self.DeleteCommand = getCommand('DELETE_BOT', 'del')
-        
+        self.UpdateCommand = getCommand('UPDATE_BOT', 'update')
+
 
 BotCommands = _BotCommands()

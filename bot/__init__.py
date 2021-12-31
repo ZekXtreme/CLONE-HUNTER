@@ -23,6 +23,7 @@ if CONFIG_FILE_URL is not None:
 
 load_dotenv('config.env')
 
+botStartTime = time.time()
 if os.path.exists('log.txt'):
     with open('log.txt', 'r+') as f:
         f.truncate(0)
@@ -30,9 +31,10 @@ if os.path.exists('log.txt'):
 def getConfig(name: str):
     return os.environ[name]
 
-# sourcery skip: assign-if-exp, boolean-if-exp-identity
+
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    handlers=[logging.FileHandler('log.txt'), logging.StreamHandler()],
+                    handlers=[logging.FileHandler(
+                        'log.txt'), logging.StreamHandler()],
                     level=logging.INFO)
 
 LOGGER = logging.getLogger(__name__)
@@ -105,7 +107,6 @@ try:
         IS_TEAM_DRIVE = False
 except KeyError:
     IS_TEAM_DRIVE = False
-
 
 LOGGER = logging.getLogger(__name__)
 updater = tg.Updater(token=BOT_TOKEN, use_context=True, workers=16)

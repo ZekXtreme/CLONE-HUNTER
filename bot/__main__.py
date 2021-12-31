@@ -1,7 +1,7 @@
 import time
 from sys import executable
 
-from telegram import ParseMode
+from telegram import ParseMode, update
 from telegram.error import BadRequest, TimedOut
 from telegram.ext import (CallbackContext, CommandHandler, Filters,
                           MessageHandler, run_async)
@@ -10,16 +10,26 @@ from bot import *
 from bot.bot_commands import BotCommands
 from bot.clone_status import CloneStatus
 from bot.decorators import is_authorised, is_owner
-from bot.fs_utils import get_readable_file_size, is_gdrive_link
+from bot.fs_utils import (get_readable_file_size, get_readable_time,
+                          is_gdrive_link)
 from bot.gDrive import *
 from bot.msg_utils import deleteMessage, sendMessage
 
 
 @run_async
 def start(update, context):
-    sendMessage("Hello! Please send me a Google Drive Shareable Link to Clone to your Drive!"
-                "\nSend /help for checking all available commands.",  context.bot, update, 'Markdown')
+    uptime = get_readable_time(time.time() - botStartTime)
+    LOGGER.info('UID: {} - UN: {} - MSG: {}'.format(update.message.chat.id,
+                update.message.chat.username, update.message.text))
+    if update.message.chat.id in AUTHORISED_USERS or update.message.from_user.id == OWNER_ID:
+        start_string = f'''Hey Please send me a Google Drive Shareable Link to Clone to your Drive\n\nSend /{BotCommands.HelpCommand}for checking all available commands\n\n*I'm Alive Since :  {uptime} \n\n ✯ Also Read the Important Instructions by clicking the Instructions Button in Help  !!'''
+        sendMessage(start_string, context.bot, update)
+    else:
+        sendMessage(
+            'Oops! not a Authorized user.\nPlease deploy your own <b> Clone bot</b>.', context.bot, update)
+
     # ;-;
+
 
 @run_async
 def helper(update, context):
@@ -31,6 +41,8 @@ def helper(update, context):
                 "*Make sure to not put any space between commas (,).*", context.bot, update, 'Markdown')
 
 # TODO Cancel Clones with /cancel command.
+
+
 @run_async
 @is_authorised
 def cloneNode(update, context):
@@ -50,7 +62,8 @@ def cloneNode(update, context):
             pass
             # Usage: /clone <FolderToClone> <Destination> <IDtoIgnoreFromClone>,<IDtoIgnoreFromClone>
 
-        msg = sendMessage(f"<b>📲 Cloning:</b> <code>{link}</code>", context.bot, update)
+        msg = sendMessage(
+            f"<b>📲 Cloning:</b> <code>{link}</code>", context.bot, update)
         status_class = CloneStatus()
         gd = GoogleDriveHelper(GFolder_ID=DESTINATION_ID)
         sendCloneStatus(update, context, status_class, msg, link)
@@ -61,8 +74,9 @@ def cloneNode(update, context):
     else:
         sendMessage("Provide a Google Drive Shared Link to Clone.", bot, update)
 
+
 @run_async
-@is_authorised 
+@is_authorised
 def pvtclone(update, context):
     args = update.message.text.split(" ")
     link = args[0]
@@ -80,7 +94,8 @@ def pvtclone(update, context):
             pass
             # Usage: /clone <FolderToClone> <Destination> <IDtoIgnoreFromClone>,<IDtoIgnoreFromClone>
 
-        msg = sendMessage(f"<b>📲 Cloning:</b> <code>{link}</code>", context.bot, update)
+        msg = sendMessage(
+            f"<b>📲 Cloning:</b> <code>{link}</code>", context.bot, update)
         status_class = CloneStatus()
         gd = GoogleDriveHelper(GFolder_ID=DESTINATION_ID)
         sendCloneStatus(update, context, status_class, msg, link)
@@ -90,6 +105,7 @@ def pvtclone(update, context):
         sendMessage(result, context.bot, update)
     else:
         sendMessage("Learn To Use me.", bot, update)
+
 
 @run_async
 def sendCloneStatus(update, context, status, msg, link):
@@ -101,10 +117,10 @@ def sendCloneStatus(update, context, status, msg, link):
                 uname = f'@{update.message.from_user.username}'
             else:
                 uname = f'<a href="tg://user?id={update.message.from_user.id}">{update.message.from_user.first_name}</a>'
-            text=f'🔗 *Cloning:* [{status.MainFolderName}]({status.MainFolderLink})\n━━━━━━━━━━━━━━\n' \
-                 f'🗃️ *Current File:* `{status.get_name()}`\n📚 *Total File:* `{int(len(status.get_name()))}`\n' \
-                 f'⬆️ *Transferred*: `{status.get_size()}`\n📁 *Destination:* [{status.DestinationFolderName}]({status.DestinationFolderLink})\n\n' \
-                 f'*👤 Clone by: {uname} ID:* `{update.message.from_user.id}`'
+            text = f'🔗 *Cloning:* [{status.MainFolderName}]({status.MainFolderLink})\n━━━━━━━━━━━━━━\n' \
+                f'🗃️ *Current File:* `{status.get_name()}`\n📚 *Total File:* `{int(len(status.get_name()))}`\n' \
+                f'⬆️ *Transferred*: `{status.get_size()}`\n📁 *Destination:* [{status.DestinationFolderName}]({status.DestinationFolderLink})\n\n' \
+                f'*👤 Clone by: {uname} ID:* `{update.message.from_user.id}`'
 
             if status.checkFileStatus():
                 text += f"\n🕒 <b>Checking Existing Files:</b> {str(status.checkFileStatus())}"
@@ -119,66 +135,79 @@ def sendCloneStatus(update, context, status, msg, link):
             continue
     return
 
+
 def sleeper(value, enabled=True):
     time.sleep(int(value))
     return
+
 
 @run_async
 @is_owner
 def sendLogs(update, context):
     with open('log.txt', 'rb') as f:
         bot.send_document(document=f, filename=f.name,
-                        reply_to_message_id=update.message.message_id,
-                        chat_id=update.message.chat_id)
+                          reply_to_message_id=update.message.message_id,
+                          chat_id=update.message.chat_id)
+
 
 @run_async
 @is_owner
 def deletefile(update, context):
-	msg_args = update.message.text.split(None, 1)
-	msg = ''
-	try:
-		link = msg_args[1]
-		LOGGER.info(link)
-	except IndexError:
-		msg = 'Send a link along with command'
+    msg_args = update.message.text.split(None, 1)
+    msg = ''
+    try:
+        link = msg_args[1]
+        LOGGER.info(link)
+    except IndexError:
+        msg = 'Send a link along with command'
 
-	if msg == '' : 
-		drive = GoogleDriveHelper()
-		msg = drive.deletefile(link)
-	LOGGER.info(f"DeleteFileCmd: {msg}")
-	reply_message = sendMessage(msg, context.bot, update)
+    if msg == '':
+        drive = GoogleDriveHelper()
+        msg = drive.deletefile(link)
+    LOGGER.info(f"DeleteFileCmd: {msg}")
+    reply_message = sendMessage(msg, context.bot, update)
+
 
 @run_async
 @is_owner
 def restart(update, context):
-    restart_message = sendMessage("Restarting, Please wait!", context.bot, update)
+    restart_message = sendMessage(
+        "Restarting, Please wait!", context.bot, update)
     # Save restart message object in order to reply to it after restarting
     with open(".restartmsg", "w") as f:
         f.truncate(0)
         f.write(f"{restart_message.chat.id}\n{restart_message.message_id}\n")
     os.execl(executable, executable, "-m", "bot")
 
+
 botcmds = [
-        (f'{BotCommands.CloneCommand}','Start Clone'),
-        (f'{BotCommands.LogCommand}', 'Send log'),
-        (f'{BotCommands.DeleteCommand}','Delete file'),
-        (f'{BotCommands.HelpCommand}','help')
-    ]
+    (f'{BotCommands.CloneCommand}', 'Start Clone'),
+    (f'{BotCommands.LogCommand}', 'Send log'),
+    (f'{BotCommands.DeleteCommand}', 'Delete file'),
+    (f'{BotCommands.HelpCommand}', 'help')
+]
 
 bot.set_my_commands(botcmds)
+
 
 def main():
     LOGGER.info("📶 Bot Started!")
     if os.path.isfile(".restartmsg"):
-      with open(".restartmsg") as f:
-          chat_id, msg_id = map(int, f)
-      bot.edit_message_text("𝐁𝐨𝐭 𝐑𝐞𝐬𝐭𝐚𝐫𝐭𝐞𝐝 𝐒𝐮𝐜𝐜𝐞𝐬𝐬𝐟𝐮𝐥𝐥𝐲!", chat_id, msg_id)
-      os.remove(".restartmsg")
+        with open(".restartmsg") as f:
+            chat_id, msg_id = map(int, f)
+        bot.edit_message_text("𝐁𝐨𝐭 𝐑𝐞𝐬𝐭𝐚𝐫𝐭𝐞𝐝 𝐒𝐮𝐜𝐜𝐞𝐬𝐬𝐟𝐮𝐥𝐥𝐲!", chat_id, msg_id)
+        os.remove(".restartmsg")
 
-    bot.sendMessage(chat_id=OWNER_ID, text=f"<b>Bot Started Successfully!</b>", parse_mode=ParseMode.HTML)
+    bot.sendMessage(
+        chat_id=OWNER_ID, text=f"<b>Bot Started Successfully!</b>", parse_mode=ParseMode.HTML)
     try:
         for i in AUTHORISED_USERS:
-            bot.sendMessage(chat_id=i, text=f"<b>Bot Started Successfully!</b>", parse_mode=ParseMode.HTML)
+            bot.sendMessage(
+                chat_id=i,
+                text='<b>Bot Started Successfully!</b>',
+                parse_mode=ParseMode.HTML,
+            )
+
     except Exception:
         pass
 
@@ -191,10 +220,12 @@ def main():
     dispatcher.add_handler(log_handler)
     dispatcher.add_handler(start_handler)
     dispatcher.add_handler(clone_handler)
-    dispatcher.add_handler(MessageHandler(Filters.text & Filters.private & ~Filters.command, pvtclone))
+    dispatcher.add_handler(MessageHandler(
+        Filters.text & Filters.private & ~Filters.command, pvtclone))
     dispatcher.add_handler(help_handler)
     dispatcher.add_handler(delete_handler)
     dispatcher.add_handler(restart_handler)
     updater.start_polling()
+
 
 main()
