@@ -14,7 +14,7 @@ from bot.fs_utils import (get_readable_file_size, get_readable_time,
                           is_gdrive_link)
 from bot.gDrive import *
 from bot.msg_utils import deleteMessage, sendMessage
-from bott import update
+from bot import update
 
 
 @run_async
@@ -23,7 +23,7 @@ def start(update, context):
     LOGGER.info('UID: {} - UN: {} - MSG: {}'.format(update.message.chat.id,
                 update.message.chat.username, update.message.text))
     if update.message.chat.id in AUTHORISED_USERS or update.message.from_user.id == OWNER_ID:
-        start_string = f'''Hey Please send me a Google Drive Shareable Link to Clone to your Drive\n\nSend /{BotCommands.HelpCommand}for checking all available commands\n\n*I'm Alive Since :  {uptime} \n\n ✯ Also Read the Important Instructions by clicking the Instructions Button in Help  !!'''
+        start_string = f'''Hey Please send me a Google Drive Shareable Link to Clone to your Drive\n\nSend /{BotCommands.HelpCommand} for checking all available commands\n\n*I'm Alive Since :  {uptime} \n\n ✯ Also Read the Important Instructions by clicking the Instructions Button in Help  !!'''
         sendMessage(start_string, context.bot, update)
     else:
         sendMessage(
@@ -35,6 +35,7 @@ def start(update, context):
 @run_async
 def helper(update, context):
     sendMessage("Here are the available commands of the bot\n\n"
+                "You can also send Link without any command in Bot pm\n"
                 f"*Usage:* `/{BotCommands.CloneCommand}: To get this message <link> [DESTINATION_ID]`\n*Example:* \n1. `/{BotCommands.CloneCommand}: To get this message https://drive.google.com/drive/u/1/folders/0AO-ISIXXXXXXXXXXXX`\n2. `/clone 0AO-ISIXXXXXXXXXXXX`"
                 "\n*DESTIONATION_ID* is optional. It can be either link or ID to where you wish to store a particular clone."
                 "\n\nYou can also *ignore folders* from clone process by doing the following:\n"
@@ -42,7 +43,7 @@ def helper(update, context):
                 "*Make sure to not put any space between commas (,).*", context.bot, update, 'Markdown')
 
 # TODO Cancel Clones with /cancel command.
-
+# Maybe add GDTOT SUPPORT
 
 @run_async
 @is_authorised
@@ -64,7 +65,7 @@ def cloneNode(update, context):
             # Usage: /clone <FolderToClone> <Destination> <IDtoIgnoreFromClone>,<IDtoIgnoreFromClone>
 
         msg = sendMessage(
-            f"<b>📲 Cloning:</b> <code>{link}</code>", context.bot, update)
+            f"<b> Cloning:</b> <code>{link}</code>", context.bot, update)
         status_class = CloneStatus()
         gd = GoogleDriveHelper(GFolder_ID=DESTINATION_ID)
         sendCloneStatus(update, context, status_class, msg, link)
@@ -93,7 +94,6 @@ def pvtclone(update, context):
             print(DESTINATION_ID)
         except IndexError:
             pass
-            # Usage: /clone <FolderToClone> <Destination> <IDtoIgnoreFromClone>,<IDtoIgnoreFromClone>
 
         msg = sendMessage(
             f"<b>📲 Cloning:</b> <code>{link}</code>", context.bot, update)
