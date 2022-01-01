@@ -14,6 +14,7 @@ from bot.fs_utils import (get_readable_file_size, get_readable_time,
                           is_gdrive_link)
 from bot.gDrive import *
 from bot.msg_utils import deleteMessage, sendMessage
+from bott import update
 
 
 @run_async
