@@ -58,14 +58,14 @@ def _def_batch_resp(id, resp, exception):
         if str(exception).startswith('<HttpError 429'):
             sleep(sleep_time / 100)
         else:
-            print(str(exception))
+            print(exception)
 
 
 # Project Creation Batch Handler
 def _pc_resp(id, resp, exception):
     global project_create_ops
     if exception is not None:
-        print(str(exception))
+        print(exception)
     else:
         for i in resp.values():
             project_create_ops.append(i)
@@ -102,7 +102,13 @@ def _enable_services(service, projects, ste):
 
 # List SAs in project
 def _list_sas(iam, project):
-    resp = iam.projects().serviceAccounts().list(name='projects/' + project, pageSize=100).execute()
+    resp = (
+        iam.projects()
+        .serviceAccounts()
+        .list(name=f'projects/{project}', pageSize=100)
+        .execute()
+    )
+
     if 'accounts' in resp:
         return resp['accounts']
     return []
@@ -236,7 +242,7 @@ def serviceaccountfactory(
             ste = selected_projects
         elif enable_services == '*':
             ste = _get_projects(cloud)
-        services = [i + '.googleapis.com' for i in services]
+        services = [f'{i}.googleapis.com' for i in services]
         print('Enabling services')
         _enable_services(serviceusage, ste, services)
     if create_sas:
@@ -339,7 +345,7 @@ if __name__ == '__main__':
             if resp:
                 print('Projects (%d):' % len(resp))
                 for i in resp:
-                    print('  ' + i)
+                    print(f'  {i}')
             else:
                 print('No projects.')
         elif args.list_sas:

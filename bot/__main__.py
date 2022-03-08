@@ -162,7 +162,7 @@ def deletefile(update, context):
     except IndexError:
         msg = 'Send a link along with command'
 
-    if msg == '':
+    if not msg:
         drive = GoogleDriveHelper()
         msg = drive.deletefile(link)
     LOGGER.info(f"DeleteFileCmd: {msg}")
@@ -200,7 +200,11 @@ def main():
         os.remove(".restartmsg")
 
     bot.sendMessage(
-        chat_id=OWNER_ID, text=f"<b>Bot Started Successfully!</b>", parse_mode=ParseMode.HTML)
+        chat_id=OWNER_ID,
+        text="<b>Bot Started Successfully!</b>",
+        parse_mode=ParseMode.HTML,
+    )
+
     try:
         for i in AUTHORISED_USERS:
             bot.sendMessage(

@@ -65,10 +65,7 @@ class GoogleDriveHelper:
         self.update_interval = 3
         self.sa_count = 0
         self.alt_auth = False
-        if not len(GFolder_ID) == 33 or not len(GFolder_ID) == 19:
-            self.gparentid = self.getIdFromUrl(GFolder_ID)
-        else:
-            self.gparentid = GFolder_ID
+        self.gparentid = self.getIdFromUrl(GFolder_ID)
 
     def cancel(self):
         self.is_cancelled = True
@@ -86,7 +83,7 @@ class GoogleDriveHelper:
 
     @staticmethod
     def getIdFromUrl(link: str):
-        if len(link) in [33, 19]:
+        if len(link) in {33, 19}:
             return link
         if "folders" in link or "file" in link:
             regex = r"https://drive\.google\.com/(drive)?/?u?/?\d?/?(mobile)?/?(file)?(folders)?/?d?/(?P<id>[-\w]+)[?+]?/?(w+)?"
@@ -154,20 +151,18 @@ class GoogleDriveHelper:
         }
 
         try:
-            res = self.__service.files().copy(supportsAllDrives=True,
+            return self.__service.files().copy(supportsAllDrives=True,
                                               fileId=file_id, body=body).execute()
-            return res
         except HttpError as err:
             if err.resp.get('content-type', '').startswith('application/json'):
                 reason = json.loads(err.content).get(
                     'error').get('errors')[0].get('reason')
-                if reason in ['userRateLimitExceeded', 'dailyLimitExceeded']:
-                    if USE_SERVICE_ACCOUNTS:
-                        self.switchServiceAccount()
-                        LOGGER.info(f"Got: {reason}, Trying Again.")
-                        self.copyFile(file_id, dest_id, status)
-                else:
+                if reason not in ['userRateLimitExceeded', 'dailyLimitExceeded']:
                     raise err
+                if USE_SERVICE_ACCOUNTS:
+                    self.switchServiceAccount()
+                    LOGGER.info(f"Got: {reason}, Trying Again.")
+                    self.copyFile(file_id, dest_id, status)
 
     @retry(wait=wait_exponential(multiplier=2, min=3, max=6), stop=stop_after_attempt(5),
            retry=retry_if_exception_type(HttpError), before=before_log(LOGGER, logging.DEBUG))
@@ -183,8 +178,7 @@ class GoogleDriveHelper:
                                                    pageSize=200,
                                                    fields='nextPageToken, files(id, name, mimeType,size)', corpora='allDrives', orderBy='folder, name',
                                                    pageToken=page_token).execute()
-            for file in response.get('files', []):
-                files.append(file)
+            files.extend(iter(response.get('files', [])))
             page_token = response.get('nextPageToken', None)
             if page_token is None:
                 break
@@ -286,12 +280,11 @@ class GoogleDriveHelper:
                                                    spaces='drive',
                                                    fields='nextPageToken, files(id, name, mimeType,size)',
                                                    pageToken=page_token).execute()
-            for file in response.get('files', []):
-                files.append(file)
+            files.extend(iter(response.get('files', [])))
             page_token = response.get('nextPageToken', None)
             if page_token is None:
                 break
-        if len(files) == 0:
+        if not files:
             return parent_id
         for file in files:
             if file.get('mimeType') == self.__G_DRIVE_DIR_MIME_TYPE:
@@ -302,7 +295,7 @@ class GoogleDriveHelper:
                 if not current_dir_id:
                     current_dir_id = self.create_directory(
                         file.get('name'), parent_id)
-                if not str(file.get('id')) in ignoreList:
+                if str(file.get('id')) not in ignoreList:
                     self.cloneFolder(file.get('name'), file_path, file.get(
                         'id'), current_dir_id, status, ignoreList)
                 else:
@@ -413,8 +406,7 @@ class GoogleDriveHelper:
         for file in response.get('files', []):
             # Detect Whether Current Entity is a Folder or File.
             if file.get('mimeType') == "application/vnd.google-apps.folder":
-                driveid = file.get('id')
-                return driveid
+                return file.get('id')
 
     @retry(wait=wait_exponential(multiplier=2, min=3, max=6), stop=stop_after_attempt(15),
            retry=retry_if_exception_type(HttpError), before=before_log(LOGGER, logging.DEBUG))
