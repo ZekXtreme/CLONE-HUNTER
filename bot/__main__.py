@@ -119,9 +119,9 @@ def sendCloneStatus(update, context, status, msg, link):
             else:
                 uname = f'<a href="tg://user?id={update.message.from_user.id}">{update.message.from_user.first_name}</a>'
             text = f'🔗 *Cloning:* [{status.MainFolderName}]({status.MainFolderLink})\n━━━━━━━━━━━━━━\n' \
-                f'🗃️ *Current File:* `{status.get_name()}`\n📚 *Total File:* `{int(len(status.get_name()))}`\n' \
-                f'⬆️ *Transferred*: `{status.get_size()}`\n📁 *Destination:* [{status.DestinationFolderName}]({status.DestinationFolderLink})\n\n' \
-                f'*👤 Clone by: {uname} ID:* `{update.message.from_user.id}`'
+                f'*Current File:* `{status.get_name()}`\n *Total File:* `{int(len(status.get_name()))}`\n' \
+                f'*Transferred*: `{status.get_size()}`\n *Destination:* [{status.DestinationFolderName}]({status.DestinationFolderLink})\n\n' \
+                f' Clone by: {uname} ID:* `{update.message.from_user.id}`'
 
             if status.checkFileStatus():
                 text += f"\n🕒 <b>Checking Existing Files:</b> {str(status.checkFileStatus())}"
@@ -192,7 +192,7 @@ bot.set_my_commands(botcmds)
 
 
 def main():
-    LOGGER.info("📶 Bot Started!")
+    LOGGER.info("Bot Started!")
     if os.path.isfile(".restartmsg"):
         with open(".restartmsg") as f:
             chat_id, msg_id = map(int, f)
