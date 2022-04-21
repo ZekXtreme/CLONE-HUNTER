@@ -1,6 +1,8 @@
 from __future__ import print_function
 from google.oauth2.service_account import Credentials
-import googleapiclient.discovery, json, progress.bar, glob, sys, argparse, time
+import googleapiclient.discovery
+import json
+import progress.bar, glob, sys, argparse, time
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 import os, pickle
@@ -48,8 +50,8 @@ if not creds or not creds.valid:
             'https://www.googleapis.com/auth/admin.directory.group',
             'https://www.googleapis.com/auth/admin.directory.group.member'
         ])
-        # creds = flow.run_local_server(port=0)
-        creds = flow.run_console()
+        creds = flow.run_local_server(port=0)
+        # creds = flow.run_console()
     # Save the credentials for the next run
     with open('token_sa.pickle', 'wb') as token:
         pickle.dump(creds, token)
@@ -62,7 +64,7 @@ pbar = progress.bar.Bar("Readying accounts", max=len(aa))
 for i in aa:
     ce = json.loads(open(i, 'r').read())['client_email']
     batch.add(drive.permissions().create(fileId=did, supportsAllDrives=True, body={
-        "role": "fileOrganizer",
+        "role": "organizer",
         "type": "user",
         "emailAddress": ce
     }))

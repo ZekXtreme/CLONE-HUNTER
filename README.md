@@ -32,15 +32,17 @@ pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
 python3 generate_drive_token.py
 ```
 # Running
-## To run this bot (locally) (suggested)
+## To run this bot (locally) (Recommended)
 ```
 python3 -m bot
 ```
 ## Deploying to Heroku (Optional) (Not Suitable for very big Clones!)
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://dashboard.heroku.com/new?template=https://github.com/anime-republic/CLONE-HUNTER)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://dashboard.heroku.com/new?template=https://github.com/zekxtreme/CLONE-HUNTER)
 
 **Please know that after using this button, your work isn't done.Either you must load token.pckle and account folder using URL or You gotta connect heroku app to your repo and add credentials.json and token.pickle and if you use Service accounts upload account folder to the repo and click on manual deploy.**
+
+**Don't Bother Deploying On Railway. Its Against Their [FAIR USER POLICY](https://railway.app/legal/fair-use). I am Not Resposible for your account getting banned**
 
 **Tip: Instead of using Termux or local machine, use [repl.it](https://repl.it/), atleast it won't throw any errors in installing Python requirements. From [repl.it](https://repl.it/) you could push to a private GitHub repo and attach that to Heroku.**
 
@@ -137,4 +139,3 @@ sudo docker stop id
 - [jagarit007](https://github.com/jagrit007) for base repo and guide
 - [Izzy](https://github.com/lzzy12/python-aria-mirror-bot)
 - [xyou365](https://github.com/xyou365/AutoRclone)
-- [Jusidama](https://github.com/jusidama18) For Lot of features

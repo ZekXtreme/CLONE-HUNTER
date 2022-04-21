@@ -34,7 +34,7 @@ def _create_accounts(service, project, count):
 
 # Create accounts needed to fill project
 def _create_remaining_accounts(iam, project):
-    print('Creating accounts in %s' % project)
+    print(f'Creating accounts in {project}')
     sa_count = len(_list_sas(iam, project))
     while sa_count != 100:
         _create_accounts(iam, project, 100 - sa_count)
@@ -128,7 +128,7 @@ def _create_sa_keys(iam, projects, path):
     global current_key_dump
     for i in projects:
         current_key_dump = []
-        print('Downloading keys from %s' % i)
+        print(f'Downloading keys from {i}')
         while current_key_dump is None or len(current_key_dump) != 100:
             batch = iam.new_batch_http_request(callback=_batch_keys_resp)
             total_sas = _list_sas(iam, i)
@@ -142,7 +142,7 @@ def _create_sa_keys(iam, projects, path):
                 ))
             batch.execute()
             if current_key_dump is None:
-                print('Redownloading keys from %s' % i)
+                print(f'Redownloading keys from {i}')
                 current_key_dump = []
             else:
                 for index, j in enumerate(current_key_dump):
@@ -185,8 +185,8 @@ def serviceaccountfactory(
         else:
             flow = InstalledAppFlow.from_client_secrets_file(credentials, SCOPES)
 
-            # creds = flow.run_local_server(port=0)
-            creds = flow.run_console()
+            creds = flow.run_local_server(port=0)
+            # creds = flow.run_console()
 
         with open(token, 'wb') as t:
             pickle.dump(creds, t)
