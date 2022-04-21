@@ -1,15 +1,14 @@
+import os
+import contextlib
 import json
 import logging
-import os
 import subprocess
 import time
-from distutils.util import strtobool as stb
 
 import requests
 import telegram.ext as tg
 from dotenv import load_dotenv
 
-from bot import *
 
 CONFIG_FILE_URL = os.environ.get('CONFIG_FILE_URL', None)
 if CONFIG_FILE_URL is not None:
@@ -28,23 +27,26 @@ if os.path.exists('log.txt'):
     with open('log.txt', 'r+') as f:
         f.truncate(0)
 
+
 def getConfig(name: str):
     return os.environ[name]
 
 
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    handlers=[logging.FileHandler(
-                        'log.txt'), logging.StreamHandler()],
-                    level=logging.INFO)
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[logging.FileHandler('log.txt'), logging.StreamHandler()],
+    level=logging.INFO
+)
 
 LOGGER = logging.getLogger(__name__)
-                    
+
+
 try:
     BOT_TOKEN = getConfig('BOT_TOKEN')
     GDRIVE_FOLDER_ID = getConfig('GDRIVE_FOLDER_ID')
     OWNER_ID = int(getConfig('OWNER_ID'))
     AUTHORISED_USERS = json.loads(getConfig('AUTHORISED_USERS'))
-except KeyError as e:
+except KeyError:
     LOGGER.error("One or more env variables missing! Exiting now")
     exit(1)
 
@@ -57,7 +59,7 @@ try:
 except KeyError:
     INDEX_URL = None
 
-try:
+with contextlib.suppress(KeyError):
     TOKEN_PICKLE_URL = getConfig('TOKEN_PICKLE_URL')
     if len(TOKEN_PICKLE_URL) == 0:
         TOKEN_PICKLE_URL = None
@@ -70,9 +72,7 @@ try:
         else:
             logging.error(res.status_code)
             raise KeyError
-except KeyError:
-    pass
-try:
+with contextlib.suppress(KeyError):
     ACCOUNTS_ZIP_URL = getConfig('ACCOUNTS_ZIP_URL')
     if len(ACCOUNTS_ZIP_URL) == 0:
         ACCOUNTS_ZIP_URL = None
@@ -87,9 +87,6 @@ try:
             raise KeyError
         subprocess.run(["unzip", "-q", "-o", "accounts.zip"])
         os.remove("accounts.zip")
-except KeyError:
-    pass
-
 try:
     USE_SERVICE_ACCOUNTS = getConfig('USE_SERVICE_ACCOUNTS')
     if USE_SERVICE_ACCOUNTS.lower() == 'true':
@@ -109,6 +106,6 @@ except KeyError:
     IS_TEAM_DRIVE = False
 
 LOGGER = logging.getLogger(__name__)
-updater = tg.Updater(token=BOT_TOKEN, use_context=True, workers=16)
+updater = tg.Updater(token=BOT_TOKEN, workers=16)
 bot = updater.bot
 dispatcher = updater.dispatcher

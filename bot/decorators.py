@@ -1,5 +1,5 @@
 from functools import wraps
-from bot import *
+from bot import AUTHORISED_USERS, OWNER_ID
 
 
 def is_authorised(func):
@@ -12,6 +12,7 @@ def is_authorised(func):
         else:
             return False
     return wrapper
+
 
 def is_owner(func):
     @wraps(func)
