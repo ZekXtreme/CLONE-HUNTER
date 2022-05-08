@@ -1,6 +1,5 @@
 from bot.fs_utils import get_readable_file_size
 
-
 class CloneStatus:
     def __init__(self, size=0):
         self.size = size
@@ -12,9 +11,10 @@ class CloneStatus:
         self.DestinationFolderName = ''
         self.DestinationFolderLink = ''
 
+
     def get_size(self):
         return get_readable_file_size(int(self.size))
-
+    
     def add_size(self, value):
         self.size += int(value)
 
@@ -23,10 +23,10 @@ class CloneStatus:
 
     def get_name(self):
         return self.name
-
+    
     def set_status(self, stat):
         self.status = stat
-
+    
     def done(self):
         return self.status
 
