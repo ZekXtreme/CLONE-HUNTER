@@ -1,14 +1,16 @@
-import json, os, glob
+import json
+import os
+import glob
 from bot import USE_SERVICE_ACCOUNTS
 path = 'accounts'
-strr= ''
+strr = ''
 
 if USE_SERVICE_ACCOUNTS and os.path.exists(os.path.join(os.getcwd(), path)):
     for count, file in enumerate(glob.glob(os.path.join(os.getcwd(), path, '*.json'))):
         x = json.load(open(file, 'rb'))
         strr += x['client_email'] + ', '
-        
-        if (count + 1)% 10 == 0:
+
+        if (count + 1) % 10 == 0:
             strr = strr[:-2]
             strr += '\n\n'
             strr += '-------------------------------------\n\n'

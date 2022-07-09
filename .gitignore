@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+*$py.class
+*.session
+.idea
+*.json
+*.pickle
+.netrc
+log.txt
+accounts/*
+config.env
+.restartmsg
+bot/*.session
+bot/*.session-journal

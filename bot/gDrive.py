@@ -15,11 +15,12 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
-from tenacity import *
+from tenacity import (retry, stop_after_attempt, wait_exponential,
+                      retry_if_exception_type, before_log, RetryError)
 
-from bot import *
+from bot import USE_SERVICE_ACCOUNTS, IS_TEAM_DRIVE, GDRIVE_FOLDER_ID, INDEX_URL
 from bot import LOGGER
-from bot.fs_utils import get_mime_type
+from .fs_utils import get_mime_type
 
 logging.getLogger('googleapiclient.discovery').setLevel(logging.ERROR)
 # https://github.com/googleapis/google-api-python-client/issues/632#issuecomment-541973021
@@ -89,7 +90,7 @@ class GoogleDriveHelper:
         if len(link) in [33, 19]:
             return link
         if "folders" in link or "file" in link:
-            regex = r"https://drive\.google\.com/(drive)?/?u?/?\d?/?(mobile)?/?(file)?(folders)?/?d?/(?P<id>[-\w]+)[?+]?/?(w+)?"
+            regex = r"https:\/\/drive\.google\.com\/(?:drive(.*?)\/folders\/|file(.*?)?\/d\/)([-\w]+)"
             res = re.search(regex, link)
             if res is None:
                 raise IndexError("GDrive ID not found.")
@@ -259,7 +260,7 @@ class GoogleDriveHelper:
                 return err
             try:
                 typeee = file.get('mimeType')
-            except:
+            except Exception:
                 typeee = 'File'
             msg += f'<b>Filename: </b><code>{file.get("name")}</code>'
             try:
@@ -306,8 +307,7 @@ class GoogleDriveHelper:
                     self.cloneFolder(file.get('name'), file_path, file.get(
                         'id'), current_dir_id, status, ignoreList)
                 else:
-                    LOGGER.info("Ignoring FolderID from clone: " +
-                                str(file.get('id')))
+                    LOGGER.info("Ignoring FolderID from clone: " + str(file.get('id')))
             else:
                 try:
                     if not self.check_file_exists(file.get('name'), parent_id):
@@ -461,7 +461,7 @@ class GoogleDriveHelper:
                 msg += f'<b>Filename : </b><code>{name}</code>'
                 try:
                     typee = drive_file['mimeType']
-                except:
+                except Exception:
                     typee = 'File'
                 try:
                     self.total_files += 1
@@ -484,7 +484,7 @@ class GoogleDriveHelper:
     def gDrive_file(self, **kwargs):
         try:
             size = int(kwargs['size'])
-        except:
+        except Exception:
             size = 0
         self.total_bytes += size
 

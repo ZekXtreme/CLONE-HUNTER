@@ -1,18 +1,18 @@
 
 # Why
-For all my people using TDs who now need to store everything in it instead of their Personal Drive. 
-**This Clone Bot** is a _multipurpose_ Telegram Bot writen in Python for cloning files to our beloved Google Drive.
+For all the people using TDs who now need to store everything in it instead of their Personal Drive. <br>
+**This Clone Bot** is a _multipurpose_ Telegram Bot writen in Python for cloning files to Google Drive.
 
 
 
 ## Setting up config file 
 - **BOT_TOKEN** : The telegram bot token that you get from @BotFather
 - **GDRIVE_FOLDER_ID** : This is the folder ID of the Google Drive Folder to which you want to clone.
-- **OWNER_ID** : The Telegram user ID (not username) of the owner of the bot (if you do not have that, send /id to @kelverbot )
+- **OWNER_ID** : The Telegram user ID (not username) of the owner of the bot (if you do not have that, send /id to @MissRose_bot)
 - **AUTHORISED_USERS** : The Telegram user IDs (not username) of people you wish to allow for bot access.It can also be group chat id. Write like: [123456, 4030394, -1003823820]
-- **IS_TEAM_DRIVE** : (Optional field) Set to True if GDRIVE_FOLDER_ID is from a Team Drive else False or Leave it empty.
-- **USE_SERVICE_ACCOUNTS**: (Optional field) (Leave empty if unsure) Whether to use service accounts or not. For this to work see  "Using service accounts" section below.
-- **INDEX_URL** : (Optional field) Refer to [Bhadoo Index](https://gitlab.com/ParveenBhadooOfficial/Google-Drive-Index) The URL should not have any trailing '/'
+- **IS_TEAM_DRIVE** : (Optional) Set to True if GDRIVE_FOLDER_ID is from a Team Drive else False or Leave it empty.
+- **USE_SERVICE_ACCOUNTS**: (Optional) (Leave empty if unsure) Whether to use service accounts or not. For this to work see  "Using service accounts" section below.
+- **INDEX_URL** : (Optional) Refer to [Bhadoo Index](https://gitlab.com/ParveenBhadooOfficial/Google-Drive-Index) The URL should not have any trailing '/'
 - **ACCOUNTS_ZIP_URL** :Only if you want to load your Service Account externally from an Index Link. Archive the accounts folder to a zip file. Fill this with the direct link of that file.
 - **TOKEN_PICKLE_URL** :Only if you want to load your **token.pickle** externally from an Index Link. Fill this with the direct link of that file. If  you don't know how to create token.pickle
 
@@ -40,14 +40,12 @@ python3 -m bot
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://dashboard.heroku.com/new?template=https://github.com/zekxtreme/CLONE-HUNTER)
 
-**Please know that after using this button, your work isn't done.Either you must load token.pckle and account folder using URL or You gotta connect heroku app to your repo and add credentials.json and token.pickle and if you use Service accounts upload account folder to the repo and click on manual deploy.**
+- **Please know that after using this button, your work isn't done.Either you must load token.pckle and account folder using URL or You gotta connect heroku app to your repo and add credentials.json and token.pickle and if you use Service accounts upload account folder to the repo and click on manual deploy.**
 
-**Don't Bother Deploying On Railway. Its Against Their [FAIR USER POLICY](https://railway.app/legal/fair-use). I am Not Resposible for your account getting banned**
-
-**Tip: Instead of using Termux or local machine, use [repl.it](https://repl.it/), atleast it won't throw any errors in installing Python requirements. From [repl.it](https://repl.it/) you could push to a private GitHub repo and attach that to Heroku.**
+- **Tip: Instead of using Termux or local machine, use [repl.it](https://repl.it/), atleast it won't throw any errors in installing Python requirements. From [repl.it](https://repl.it/) you could push to a private GitHub repo and attach that to Heroku.**
 
 
-### Using service accounts for uploading to avoid user rate limit
+# Using service accounts for uploading to avoid user rate limit
 For Service Account to work, you must set USE_SERVICE_ACCOUNTS=True in config file or environment variables
 Many thanks to [AutoRClone](https://github.com/xyou365/AutoRclone) for the scripts
 
@@ -94,7 +92,7 @@ Deploying is pretty much straight forward and is divided into several steps as f
 
 - Clone this repo:
 ```
-git clone https://github.com/Anime-Republic/CLONE-HUNTER/
+git clone https://github.com/zekxtreme/CLONE-HUNTER/
 cd CLONE-HUNTER
 ```
 
@@ -139,3 +137,10 @@ sudo docker stop id
 - [jagarit007](https://github.com/jagrit007) for base repo and guide
 - [Izzy](https://github.com/lzzy12/python-aria-mirror-bot)
 - [xyou365](https://github.com/xyou365/AutoRclone)
+
+
+<br>
+<br>
+
+# Note
+**Don't Bother Deploying On Railway. Its Against Their [FAIR USER POLICY](https://railway.app/legal/fair-use). I am Not Resposible for your account getting banned**

@@ -17,6 +17,7 @@ class _BotCommands:
         self.HelpCommand = getCommand('HELP_BOT', 'help')
         self.LogCommand = getCommand('LOG_BOT', 'logs')
         self.CloneCommand = getCommand('CLONE_BOT', 'clone')
+        self.CountCommand = getCommand('COUNT_BOT', 'count')
         self.DeleteCommand = getCommand('DELETE_BOT', 'del')
         self.UpdateCommand = getCommand('UPDATE_BOT', 'update')
 
