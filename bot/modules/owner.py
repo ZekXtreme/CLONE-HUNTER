@@ -19,7 +19,7 @@ async def sendLogs(bot, message):
 
 @Client.on_message(filters.command(BotCommands.RestartCommand))
 async def restart(bot, message):
-    if message.from_user.id in AUTHORISED_USERS or message.from_user.id == OWNER_ID:    # noqa
+    if message.from_user.id == OWNER_ID:
         restart_message = await message.reply_text(
             "Restarting, Please wait!")
         # Save restart message object in order to reply to it after restarting
@@ -44,7 +44,7 @@ async def gitpull(bot, message):
         with open(".restartmsg", "w") as f:
             f.truncate(0)
             f.write(
-                f"{restart_message.chat.id}\n{restart_message.message.id}\n")
+                f"{restart_message.chat.id}\n{restart_message.id}\n")
         os.execl(executable, executable, "-m", "bot")
     except Exception as e:
         await message.reply_text(f'<b>ERROR :</b> <code>{e}</code>')

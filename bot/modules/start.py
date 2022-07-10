@@ -17,7 +17,7 @@ async def start(bot, message):
 Hey Please send me a Drive Shareable Link to Clone to your Drive
 Send /{BotCommands.HelpCommand} for checking all available commands
 I'm Alive Since :  {uptime} Also Read the Important
-Instructions by clicking the Instructions in Help  !!'''
+Instructions by clicking the Help Button !!'''
         await message.reply_text(start_string, reply_markup=START_BUTTONS)
     else:
         await message.reply_text('''Oops! not a Authorized user.

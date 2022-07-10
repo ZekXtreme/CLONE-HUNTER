@@ -128,7 +128,7 @@ async def countNode(bot, message):
     if len(args) > 1:
         link = args[1]
     else:
-        link = None   
+        link = None
     if link is not None:
         msg = await message.reply_text(f"Counting: <code>{link}</code>")
         gd = GoogleDriveHelper()
