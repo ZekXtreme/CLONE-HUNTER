@@ -36,13 +36,6 @@ python3 generate_drive_token.py
 ```
 python3 -m bot
 ```
-## Deploying to Heroku (Optional) (Not Suitable for very big Clones!)
-
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://dashboard.heroku.com/new?template=https://github.com/zekxtreme/CLONE-HUNTER)
-
-- **Please know that after using this button, your work isn't done.Either you must load token.pckle and account folder using URL or You gotta connect heroku app to your repo and add credentials.json and token.pickle and if you use Service accounts upload account folder to the repo and click on manual deploy.**
-
-- **Tip: Instead of using Termux or local machine, use [repl.it](https://repl.it/), atleast it won't throw any errors in installing Python requirements. From [repl.it](https://repl.it/) you could push to a private GitHub repo and attach that to Heroku.**
 
 
 # Using service accounts for uploading to avoid user rate limit
@@ -144,3 +137,5 @@ sudo docker stop id
 
 # Note
 **Don't Bother Deploying On Railway. Its Against Their [FAIR USER POLICY](https://railway.app/legal/fair-use). I am Not Resposible for your account getting banned**
+
+**RIP HEROKU**
