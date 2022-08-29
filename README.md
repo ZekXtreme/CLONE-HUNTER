@@ -1,9 +1,6 @@
 
 # Why
-For all my people using TDs who now need to store everything in it instead of their Personal Drive. 
-**This Clone Bot** is a _multipurpose_ Telegram Bot writen in Python for cloning files to our beloved Google Drive.
-
-
+You Know better
 
 ## Setting up config file 
 - **BOT_TOKEN** : The telegram bot token that you get from @BotFather
@@ -36,11 +33,6 @@ python3 generate_drive_token.py
 ```
 python3 -m bot
 ```
-## Deploying to Heroku (Optional) (Not Suitable for very big Clones!)
-
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://dashboard.heroku.com/new?template=https://github.com/anime-republic/CLONE-HUNTER)
-
-**Please know that after using this button, your work isn't done.Either you must load token.pckle and account folder using URL or You gotta connect heroku app to your repo and add credentials.json and token.pickle and if you use Service accounts upload account folder to the repo and click on manual deploy.**
 
 **Tip: Instead of using Termux or local machine, use [repl.it](https://repl.it/), atleast it won't throw any errors in installing Python requirements. From [repl.it](https://repl.it/) you could push to a private GitHub repo and attach that to Heroku.**
 
@@ -92,7 +84,7 @@ Deploying is pretty much straight forward and is divided into several steps as f
 
 - Clone this repo:
 ```
-git clone https://github.com/Anime-Republic/CLONE-HUNTER/
+git clone https://github.com/zekxtreme/CLONE-HUNTER/
 cd CLONE-HUNTER
 ```
 
@@ -137,4 +129,3 @@ sudo docker stop id
 - [jagarit007](https://github.com/jagrit007) for base repo and guide
 - [Izzy](https://github.com/lzzy12/python-aria-mirror-bot)
 - [xyou365](https://github.com/xyou365/AutoRclone)
-- [Jusidama](https://github.com/jusidama18) For Lot of features
