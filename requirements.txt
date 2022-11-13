@@ -7,4 +7,4 @@ python-dotenv
 python-magic
 requests
 tenacity==8.0.1
-tgcrypto==1.2.3
+tgcrypto==1.2.5
