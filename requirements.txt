@@ -2,7 +2,7 @@ bs4
 google-api-python-client
 google-auth-httplib2
 google-auth-oauthlib
-pyrogram==2.0.97
+pyrogram==2.0.99
 python-dotenv
 python-magic
 requests
