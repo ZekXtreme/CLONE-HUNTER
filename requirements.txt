@@ -6,5 +6,5 @@ pyrogram==2.0.97
 python-dotenv
 python-magic
 requests
-tenacity==8.0.1
+tenacity==8.2.1
 tgcrypto==1.2.5
